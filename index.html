@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aman's Age Tracker</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+        background:linear-gradient(135deg,#74b9ff,#dfe6e9);
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding:20px;
+    }
+
+    .container{
+        background:white;
+        padding:35px;
+        border-radius:18px;
+        box-shadow:0 15px 40px rgba(0,0,0,.15);
+        max-width:700px;
+        width:100%;
+        text-align:center;
+    }
+
+    h1{
+        color:#2d3436;
+        margin-bottom:8px;
+    }
+
+    .subtitle{
+        color:#636e72;
+        margin-bottom:30px;
+    }
+
+    .grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+        gap:18px;
+    }
+
+    .card{
+        background:#f8f9fa;
+        border-radius:14px;
+        padding:20px;
+    }
+
+    .number{
+        font-size:2.2rem;
+        font-weight:bold;
+        color:#0984e3;
+    }
+
+    .label{
+        margin-top:8px;
+        color:#555;
+        font-size:1rem;
+    }
+
+    .exact{
+        margin-top:30px;
+        padding:18px;
+        background:#eef8ff;
+        border-radius:12px;
+        font-size:1.1rem;
+        color:#2d3436;
+        line-height:1.6;
+    }
+
+    footer{
+        margin-top:25px;
+        color:#777;
+        font-size:.9rem;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>👶 Aman</h1>
+    <div class="subtitle">
+        Baby Boy ❤️<br>
+        Born on 16 June 2026 at 3:46 AM
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="number" id="days">0</div>
+            <div class="label">Days</div>
+        </div>
+
+        <div class="card">
+            <div class="number" id="weeks">0</div>
+            <div class="label">Weeks</div>
+        </div>
+
+        <div class="card">
+            <div class="number" id="months">0</div>
+            <div class="label">Months</div>
+        </div>
+
+        <div class="card">
+            <div class="number" id="years">0</div>
+            <div class="label">Years</div>
+        </div>
+
+    </div>
+
+    <div class="exact" id="exactAge"></div>
+
+    <footer>
+        Updates automatically every second
+    </footer>
+
+</div>
+
+<script>
+
+const birthDate = new Date(2026, 5, 16, 3, 46, 0); // Months start from 0
+
+function calculateAge(){
+
+    const now = new Date();
+
+    const diffMs = now - birthDate;
+
+    const totalDays = Math.floor(diffMs / (1000*60*60*24));
+    const totalWeeks = Math.floor(totalDays / 7);
+
+    // Calendar Years / Months
+    let years = now.getFullYear() - birthDate.getFullYear();
+    let months = now.getMonth() - birthDate.getMonth();
+    let days = now.getDate() - birthDate.getDate();
+
+    if(days < 0){
+        months--;
+        const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+        days += previousMonth;
+    }
+
+    if(months < 0){
+        years--;
+        months += 12;
+    }
+
+    const totalMonths = years * 12 + months;
+
+    // Remaining time
+    let temp = new Date(birthDate);
+
+    temp.setFullYear(temp.getFullYear() + years);
+    temp.setMonth(temp.getMonth() + months);
+
+    let remainingMs = now - temp;
+
+    let remDays = Math.floor(remainingMs/(1000*60*60*24));
+
+    remainingMs -= remDays*24*60*60*1000;
+
+    const hours = Math.floor(remainingMs/(1000*60*60));
+
+    remainingMs -= hours*60*60*1000;
+
+    const minutes = Math.floor(remainingMs/(1000*60));
+
+    remainingMs -= minutes*60*1000;
+
+    const seconds = Math.floor(remainingMs/1000);
+
+    document.getElementById("days").textContent = totalDays.toLocaleString();
+    document.getElementById("weeks").textContent = totalWeeks.toLocaleString();
+    document.getElementById("months").textContent = totalMonths.toLocaleString();
+    document.getElementById("years").textContent = years.toLocaleString();
+
+    document.getElementById("exactAge").innerHTML =
+        `<strong>Exact Age</strong><br><br>
+        ${years} year${years!==1?'s':''},
+        ${months} month${months!==1?'s':''},
+        ${remDays} day${remDays!==1?'s':''},
+        ${hours} hour${hours!==1?'s':''},
+        ${minutes} minute${minutes!==1?'s':''},
+        ${seconds} second${seconds!==1?'s':''}`;
+}
+
+calculateAge();
+setInterval(calculateAge,1000);
+
+</script>
+
+</body>
+</html>
