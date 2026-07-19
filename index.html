@@ -6,239 +6,126 @@
 <title>Days Since</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
-    background:linear-gradient(-45deg,#1e3c72,#2a5298,#6a11cb,#2575fc);
-    background-size:400% 400%;
-    animation:bg 18s ease infinite;
-}
-
-@keyframes bg{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
-}
-
-body::before{
-    content:"✨ ✨ ⭐ 🌙 ✨ ⭐";
-    position:fixed;
-    inset:0;
-    opacity:.08;
-    font-size:40px;
-    letter-spacing:80px;
-    line-height:120px;
-    pointer-events:none;
-}
-
-.container{
-    width:min(700px,92%);
-    background:rgba(255,255,255,.14);
-    backdrop-filter:blur(18px);
-    border:1px solid rgba(255,255,255,.2);
-    border-radius:28px;
-    padding:35px;
-    color:#fff;
-    box-shadow:0 20px 50px rgba(0,0,0,.25);
-}
-
-h1{
-    text-align:center;
-    font-size:2rem;
-    margin-bottom:20px;
-}
-
-.exact{
-    text-align:center;
-    padding:25px;
-    border-radius:20px;
-    background:rgba(255,255,255,.12);
-    margin-bottom:28px;
-    animation:pulse 3s ease-in-out infinite;
-}
-
-@keyframes pulse{
-    50%{
-        transform:scale(1.02);
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(-45deg, #1e3c72, #2a5298, #6a11cb, #2575fc);
+        background-size: 400% 400%;
+        animation: bg 18s ease infinite;
+        color: #fff;
+        padding: 20px;
     }
-}
-
-#exactAge{
-    font-size:1.5rem;
-    font-weight:700;
-    line-height:1.6;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-    gap:16px;
-}
-
-.card{
-    background:rgba(255,255,255,.12);
-    border-radius:18px;
-    padding:22px;
-    text-align:center;
-}
-
-.number{
-    font-size:2.4rem;
-    font-weight:700;
-    margin-bottom:8px;
-}
-
-.label{
-    font-size:1rem;
-    opacity:.9;
-}
-
-.zodiac{
-    margin-top:28px;
-    background:rgba(255,255,255,.12);
-    border-radius:18px;
-    padding:20px;
-    text-align:center;
-    font-size:1.2rem;
-}
-
-.footer{
-    margin-top:24px;
-    text-align:center;
-    opacity:.8;
-    font-size:.95rem;
-}
-
-@media(max-width:600px){
-    #exactAge{
-        font-size:1.2rem;
+    @keyframes bg { 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
+    
+    .container {
+        width: min(700px, 92%);
+        background: rgba(255,255,255,.14);
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 28px;
+        padding: 35px;
+        box-shadow: 0 20px 50px rgba(0,0,0,.25);
+    }
+    h1 { text-align: center; font-size: 2rem; margin-bottom: 20px; }
+    
+    .date-control { text-align: center; margin-bottom: 20px; }
+    input[type="date"] {
+        padding: 10px 15px; border-radius: 12px; border: none; font-size: 1rem;
+        background: rgba(255,255,255,0.2); color: white; cursor: pointer;
     }
 
-    .number{
-        font-size:2rem;
-    }
-}
+    .exact { text-align: center; padding: 25px; border-radius: 20px; background: rgba(255,255,255,.12); margin-bottom: 28px; }
+    #exactAge { font-size: 1.5rem; font-weight: 700; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
+    .card { background: rgba(255,255,255,.12); border-radius: 18px; padding: 22px; text-align: center; }
+    .number { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+    .label { font-size: 1rem; opacity: .9; }
+
+    .zodiac { margin-top: 28px; background: rgba(255,255,255,.12); border-radius: 18px; padding: 20px; text-align: center; }
+    .ref-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 15px; border-radius: 20px; cursor: pointer; margin-top: 10px; font-size: 0.8rem; }
 </style>
 </head>
 
 <body>
 
 <div class="container">
+    <h1>⏳ Days Since</h1>
+    
+    <div class="date-control">
+        <input type="date" id="datePicker" value="2026-06-16">
+    </div>
 
-<h1>⏳ Days Since</h1>
+    <div class="exact">
+        <div id="exactAge">--</div>
+    </div>
 
-<div class="exact">
-<div id="exactAge"></div>
-</div>
+    <div class="grid">
+        <div class="card"><div class="number" id="days">0</div><div class="label">📅 Days</div></div>
+        <div class="card"><div class="number" id="weeks">0</div><div class="label">🗓️ Weeks</div></div>
+        <div class="card"><div class="number" id="months">0</div><div class="label">🌱 Months</div></div>
+        <div class="card"><div class="number" id="years">0</div><div class="label">🎂 Years</div></div>
+    </div>
 
-<div class="grid">
-
-<div class="card">
-<div class="number" id="days">0</div>
-<div class="label">📅 Days</div>
-</div>
-
-<div class="card">
-<div class="number" id="weeks">0</div>
-<div class="label">🗓️ Weeks</div>
-</div>
-
-<div class="card">
-<div class="number" id="months">0</div>
-<div class="label">🌱 Months</div>
-</div>
-
-<div class="card">
-<div class="number" id="years">0</div>
-<div class="label">🎂 Years</div>
-</div>
-
-</div>
-
-<div class="zodiac">
-♊ Zodiac Sign: <strong>Gemini</strong>
-</div>
-
-<div class="footer">
-✨ Every second is another tiny milestone.
-</div>
-
+    <div class="zodiac">
+        <div id="zodiacSign">✨ Sign: --</div>
+        <button class="ref-btn" onclick="alert('Zodiac Reference:\nAquarius: Jan 20-Feb 18\nPisces: Feb 19-Mar 20\nAries: Mar 21-Apr 19\nTaurus: Apr 20-May 20\nGemini: May 21-Jun 20\nCancer: Jun 21-Jul 22\nLeo: Jul 23-Aug 22\nVirgo: Aug 23-Sep 22\nLibra: Sep 23-Oct 22\nScorpio: Oct 23-Nov 21\nSagittarius: Nov 22-Dec 21\nCapricorn: Dec 22-Jan 19')">See reference</button>
+    </div>
 </div>
 
 <script>
+    const picker = document.getElementById('datePicker');
 
-const startDate = new Date(2026,5,16,3,46,0);
-
-function update(){
-
-    const now = new Date();
-
-    const diff = now - startDate;
-
-    const totalDays = Math.floor(diff / (1000*60*60*24));
-    const totalWeeks = Math.floor(totalDays / 7);
-
-    let years = now.getFullYear() - startDate.getFullYear();
-    let months = now.getMonth() - startDate.getMonth();
-    let days = now.getDate() - startDate.getDate();
-
-    if(days < 0){
-        months--;
-        days += new Date(now.getFullYear(),now.getMonth(),0).getDate();
+    function getZodiac(date) {
+        const m = date.getMonth() + 1;
+        const d = date.getDate();
+        if((m==1 && d>=20) || (m==2 && d<=18)) return "♒ Aquarius";
+        if((m==2 && d>=19) || (m==3 && d<=20)) return "♓ Pisces";
+        if((m==3 && d>=21) || (m==4 && d<=19)) return "♈ Aries";
+        if((m==4 && d>=20) || (m==5 && d<=20)) return "♉ Taurus";
+        if((m==5 && d>=21) || (m==6 && d<=20)) return "♊ Gemini";
+        if((m==6 && d>=21) || (m==7 && d<=22)) return "♋ Cancer";
+        if((m==7 && d>=23) || (m==8 && d<=22)) return "♌ Leo";
+        if((m==8 && d>=23) || (m==9 && d<=22)) return "♍ Virgo";
+        if((m==9 && d>=23) || (m==10 && d<=22)) return "♎ Libra";
+        if((m==10 && d>=23) || (m==11 && d<=21)) return "♏ Scorpio";
+        if((m==11 && d>=22) || (m==12 && d<=21)) return "♐ Sagittarius";
+        return "♑ Capricorn";
     }
 
-    if(months < 0){
-        years--;
-        months += 12;
+    function update() {
+        // Use local time for picker to avoid timezone shifts
+        const [y, m, d] = picker.value.split('-').map(Number);
+        const startDate = new Date(y, m - 1, d);
+        const now = new Date();
+        const diff = now - startDate;
+        
+        const totalDays = Math.floor(diff / (1000*60*60*24));
+        const totalWeeks = Math.floor(totalDays / 7);
+        
+        let years = now.getFullYear() - startDate.getFullYear();
+        let months = now.getMonth() - startDate.getMonth();
+        let days = now.getDate() - startDate.getDate();
+        
+        if(days < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+        if(months < 0) { years--; months += 12; }
+        
+        document.getElementById("days").textContent = totalDays.toLocaleString();
+        document.getElementById("weeks").textContent = totalWeeks.toLocaleString();
+        document.getElementById("months").textContent = (years*12 + months).toLocaleString();
+        document.getElementById("years").textContent = years.toLocaleString();
+        document.getElementById("exactAge").innerHTML = `🎉 <strong>${years}</strong> Years • <strong>${months}</strong> Months • <strong>${days}</strong> Days`;
+        
+        // Update Zodiac based on the selected start date
+        document.getElementById("zodiacSign").innerHTML = `✨ Sign: <strong>${getZodiac(startDate)}</strong>`;
     }
 
-    const totalMonths = years*12 + months;
-
-    let anchor = new Date(startDate);
-
-    anchor.setFullYear(anchor.getFullYear()+years);
-    anchor.setMonth(anchor.getMonth()+months);
-
-    let remaining = now-anchor;
-
-    const d = Math.floor(remaining/(1000*60*60*24));
-    remaining -= d*24*60*60*1000;
-
-    const h = Math.floor(remaining/(1000*60*60));
-    remaining -= h*60*60*1000;
-
-    const m = Math.floor(remaining/(1000*60));
-    remaining -= m*60*1000;
-
-    const s = Math.floor(remaining/1000);
-
-    document.getElementById("days").textContent=totalDays.toLocaleString();
-    document.getElementById("weeks").textContent=totalWeeks.toLocaleString();
-    document.getElementById("months").textContent=totalMonths.toLocaleString();
-    document.getElementById("years").textContent=years.toLocaleString();
-
-    document.getElementById("exactAge").innerHTML=
-        `🎉 <strong>${years}</strong> Years •
-        <strong>${months}</strong> Months •
-        <strong>${d}</strong> Days<br><br>
-        ⏰ ${String(h).padStart(2,"0")} :
-        ${String(m).padStart(2,"0")} :
-        ${String(s).padStart(2,"0")}`;
-}
-
-update();
-setInterval(update,1000);
-
+    picker.addEventListener('change', update);
+    update();
 </script>
 
 </body>
